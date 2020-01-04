@@ -3,7 +3,7 @@ from translate import googleTranslate, stripper, strip_handle, strip_hashtag, pa
 
 
 CONSUMER_KEY = 'R1PrxYTZ95iysyEbIdIWLPEZt'
-CONSUMER_SECRET = '6N4fUwtdZcNPLX1tzqVarKEGfjFwqac1LBxVqFM1AvU9WJMlmC '
+CONSUMER_SECRET = '6N4fUwtdZcNPLX1tzqVarKEGfjFwqac1LBxVqFM1AvU9WJMlmC'
 ACCESS_KEY = '1213366426557304834-iZEEbda4mMcn8UDNx6I0gxtflmxbdN'
 ACCESS_SECRET = 'n93PNFB099yW5a3XOjqbZNe8y77jjWgTwbCECTZME6yGS'
 
