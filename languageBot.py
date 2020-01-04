@@ -1,12 +1,11 @@
 import tweepy
-import time
 from translate import googleTranslate, stripper, strip_handle, strip_hashtag, packageMention
 
 
-CONSUMER_KEY = 'dvthAaXBTC4il9JNLEkkLLQ1l'
-CONSUMER_SECRET = 'Tu9SL3dfZLas0zcCPEOj1OfZLliXYKtlXZoypqKg3Eoac0inTs'
-ACCESS_KEY = '386145174-LvlBHa3RtFPGmmUoM4mkC3FqZq4vI2z7htDmJQwH'
-ACCESS_SECRET = 'CC2ULbVuS8p9ncdmtkikpDqs1UzhYMI10mW4HJOC6NloF'
+CONSUMER_KEY = 'R1PrxYTZ95iysyEbIdIWLPEZt'
+CONSUMER_SECRET = '6N4fUwtdZcNPLX1tzqVarKEGfjFwqac1LBxVqFM1AvU9WJMlmC '
+ACCESS_KEY = '1213366426557304834-iZEEbda4mMcn8UDNx6I0gxtflmxbdN'
+ACCESS_SECRET = 'n93PNFB099yW5a3XOjqbZNe8y77jjWgTwbCECTZME6yGS'
 
 
 
@@ -236,8 +235,6 @@ def main():
             break
     #except tweepy.TweepError:
     #    byteMe = 0
-
-    time.sleep(5)
     main()
 
 

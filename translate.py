@@ -1,7 +1,7 @@
 from google.cloud import translate_v2 as translate
 
 while_recurse_key = 0
-BOT_HANDLE = '@joshuadedricks'
+BOT_HANDLE = '@LangwageBot'
 
 def strip_handle(text):
     text = text.replace(BOT_HANDLE, "")
