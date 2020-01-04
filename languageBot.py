@@ -212,29 +212,30 @@ def main():
 
     with open('last_id.txt', 'r') as read_write:
         last_id = int(read_write.read())
-    try:
-        for friend in tweepy.Cursor(api.mentions_timeline).items():
-            COUNTER = COUNTER + 1
-            if COUNTER == 1:
-                break_id = friend.id
-                with open('last_id.txt', 'w') as in_write:
-                    in_write.write(str(break_id))
-            if friend.id != last_id:
-                if(friend.text.find('#') != -1):
-                    for iso, language in languages.items():
-                        tag_language = '#' + language
-                        if friend.text.lower().find(tag_language.lower()) != -1 :
-                            filteredText = stripper(friend.text, language.lower())
-                            translatedText = googleTranslate(filteredText, iso)
-                            authorHandle = friend.author.screen_name
-                            print (authorHandle)
-                            api.update_status(packageMention(authorHandle, translatedText), friend.id)
-                            break;
+    #try:
+    for friend in tweepy.Cursor(api.mentions_timeline).items():
+        COUNTER = COUNTER + 1
+        if COUNTER == 1:
+            break_id = friend.id
+            with open('last_id.txt', 'w') as in_write:
+                in_write.write(str(break_id))
+        if friend.id != last_id:
+            print(friend)
+            if(friend.text.find('#') != -1):
+                for iso, language in languages.items():
+                    tag_language = '#' + language
+                    if friend.text.lower().find(tag_language.lower()) != -1 :
+                        filteredText = stripper(friend.text, language.lower())
+                        translatedText = googleTranslate(filteredText, iso)
+                        authorHandle = friend.author.screen_name
+                        print (authorHandle)
+                        api.update_status(packageMention(authorHandle, translatedText), friend.id)
+                        break;
 
-            else:
-                break
-    except tweepy.TweepError:
-        byteMe = 0
+        else:
+            break
+    #except tweepy.TweepError:
+    #    byteMe = 0
 
     time.sleep(5)
     main()
