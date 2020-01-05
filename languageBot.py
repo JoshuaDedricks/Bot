@@ -1,5 +1,7 @@
 import tweepy
+import time
 from translate import googleTranslate, stripper, strip_handle, strip_hashtag, packageMention
+
 
 
 CONSUMER_KEY = 'R1PrxYTZ95iysyEbIdIWLPEZt'
@@ -8,15 +10,10 @@ ACCESS_KEY = '1213366426557304834-iZEEbda4mMcn8UDNx6I0gxtflmxbdN'
 ACCESS_SECRET = 'n93PNFB099yW5a3XOjqbZNe8y77jjWgTwbCECTZME6yGS'
 
 
-
-## TODO:
-# Remove Bot Handle
-# Remove Language hashtag
-# --Help for Help
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 
-api = tweepy.API(auth, wait_on_rate_limit=True)
+api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
 def main():
     last_id = 0;
@@ -53,6 +50,7 @@ def main():
         'ce': 'Chechen',
         'ny': 'Chichewa; Chewa; Nyanja',
         'zh': 'Chinese',
+        'zh': 'Mandarin',
         'cv': 'Chuvash',
         'kw': 'Cornish',
         'co': 'Corsican',
@@ -211,30 +209,32 @@ def main():
 
     with open('last_id.txt', 'r') as read_write:
         last_id = int(read_write.read())
-    #try:
-    for friend in tweepy.Cursor(api.mentions_timeline).items():
-        COUNTER = COUNTER + 1
-        if COUNTER == 1:
-            break_id = friend.id
-            with open('last_id.txt', 'w') as in_write:
-                in_write.write(str(break_id))
-        if friend.id != last_id:
-            print(friend)
-            if(friend.text.find('#') != -1):
-                for iso, language in languages.items():
-                    tag_language = '#' + language
-                    if friend.text.lower().find(tag_language.lower()) != -1 :
-                        filteredText = stripper(friend.text, language.lower())
-                        translatedText = googleTranslate(filteredText, iso)
-                        authorHandle = friend.author.screen_name
-                        print (authorHandle)
-                        api.update_status(packageMention(authorHandle, translatedText), friend.id)
-                        break;
 
-        else:
-            break
-    #except tweepy.TweepError:
-    #    byteMe = 0
+    try:
+        for friend in tweepy.Cursor(api.mentions_timeline, since_id = last_id).items(6):
+            COUNTER = COUNTER + 1
+            if COUNTER == 1:
+                break_id = friend.id
+                with open('last_id.txt', 'w') as in_write:
+                    in_write.write(str(break_id))
+            if friend.id != last_id:
+                if(friend.text.find('#') != -1):
+                    for iso, language in languages.items():
+                        tag_language = '#' + language
+                        if friend.text.lower().find(tag_language.lower()) != -1 :
+                            filteredText = stripper(friend.text, language.lower())
+                            translatedText = googleTranslate(filteredText, iso)
+                            authorHandle = friend.author.screen_name
+                            print (authorHandle)
+                            api.update_status(packageMention(authorHandle, translatedText), friend.id)
+                            break;
+
+            else:
+                break
+    except tweepy.TweepError as e:
+        print (e)   ###### Log function is supposed to be here
+
+    time.sleep(15)
     main()
 
 
