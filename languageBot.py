@@ -1,18 +1,18 @@
 import tweepy
 import time
 from translate import googleTranslate, stripper, strip_handle, strip_hashtag, packageMention
-
-
+from userControl import follow
 
 CONSUMER_KEY = 'R1PrxYTZ95iysyEbIdIWLPEZt'
 CONSUMER_SECRET = '6N4fUwtdZcNPLX1tzqVarKEGfjFwqac1LBxVqFM1AvU9WJMlmC'
 ACCESS_KEY = '1213366426557304834-iZEEbda4mMcn8UDNx6I0gxtflmxbdN'
 ACCESS_SECRET = 'n93PNFB099yW5a3XOjqbZNe8y77jjWgTwbCECTZME6yGS'
 
+LAST_ID_FILE = 'storageFiles/last_id.txt'
+
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-
 api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
 def main():
@@ -108,7 +108,7 @@ def main():
         'kg': 'Kongo',
         'ko': 'Korean',
         'ku': 'Kurdish',
-        'kj': 'Kwanyama: Kuanyama',
+        'kj': 'Kwanyama',
         'la': 'Latin',
         'lb': 'Luxembourgish',
         'lg': 'Luganda',
@@ -207,7 +207,7 @@ def main():
         'zu': 'Zulu'
     }
 
-    with open('last_id.txt', 'r') as read_write:
+    with open(LAST_ID_FILE, 'r') as read_write:
         last_id = int(read_write.read())
 
     try:
@@ -215,7 +215,7 @@ def main():
             COUNTER = COUNTER + 1
             if COUNTER == 1:
                 break_id = friend.id
-                with open('last_id.txt', 'w') as in_write:
+                with open(LAST_ID_FILE, 'w') as in_write:
                     in_write.write(str(break_id))
             if friend.id != last_id:
                 if(friend.text.find('#') != -1):
@@ -226,15 +226,16 @@ def main():
                             translatedText = googleTranslate(filteredText, iso)
                             authorHandle = friend.author.screen_name
                             print (authorHandle)
-                            api.update_status(packageMention(authorHandle, translatedText), friend.id)
+                            try:
+                                api.update_status(packageMention(authorHandle, translatedText), friend.id)
+                            except tweepy.TweepError as e:
+                                print (e)
                             break;
-
             else:
                 break
     except tweepy.TweepError as e:
-        print (e)   ###### Log function is supposed to be here
-
-    time.sleep(15)
+        print (e)
+    time.sleep(20)
     main()
 
 

@@ -6,6 +6,7 @@ BOT_HANDLE = '@LangwageBot'
 def strip_handle(text):
     text = text.replace(BOT_HANDLE, "")
     return text
+
 # --- End of Method
 
 def strip_hashtag(text, language):
