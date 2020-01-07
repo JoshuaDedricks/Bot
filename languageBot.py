@@ -236,7 +236,15 @@ def main():
     except tweepy.TweepError as e:
         print (e)
     time.sleep(20)
+
+    try:
+        main()
+    except:
+        os.abort()
+        main()
+
+try:
     main()
-
-
-main()  ####### First time run
+except:
+    os.abort
+    main()  ####### First time run
